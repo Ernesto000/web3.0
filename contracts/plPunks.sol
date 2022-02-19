@@ -5,14 +5,16 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./Base64.sol";
+import "./punkDNA.sol";
 
 
 
-contract plPunks is ERC721, ERC721Enumerable{
+contract plPunks is ERC721, ERC721Enumerable, punkDNA {
     using Counters for Counters.Counter;
 
     Counters.Counter private _idCounter;
     uint256 public maxSupply;
+    mapping(uint256 => uint256) public tokenDNA;
 
     constructor(uint256 _maxSupply) ERC721("PlPunks","PLPNKS"){
         maxSupply = _maxSupply;
