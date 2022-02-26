@@ -214,10 +214,11 @@ contract PunkDNA {
         return uint256(hashedParams);
     }
 
+   
+
     // Get attributes
     uint8 constant ADN_SECTION_SIZE = 2;
 
-    // TODO: Slice DNA function
 
     function _getDNASection (uint256 _dna, uint8 _rightDiscard)
         internal 
@@ -232,7 +233,7 @@ contract PunkDNA {
             );
         }
 
-    function getAccessoriesType(uint8 _dna)
+    function getAccessoriesType(uint256 _dna)
         public
         view
         returns (string memory)

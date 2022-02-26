@@ -24,8 +24,52 @@ contract plPunks is ERC721, ERC721Enumerable, punkDNA {
     function mint()public {
         uint256 current = _idCounter.current();
         require(current < maxSupply, "No tokens left");
+
+        tokenDNA(current) = deterministicPseudoRandomDNA(current, msg.sender);
         _safeMint(msg.sender, current);
     }
+
+    function _baseURI() internal pure override returns(string memory){
+        return "https://avataaars.io";
+    }
+
+    function _paramsURI(uint256 _dna) internal view returns (string memory) {
+        string memory params;
+        {    params = string(
+                abi.encodePacked(
+                    "accessoriesType=",
+                    getAccessoriesType(_dna),
+                    "&clotheColor=",
+                    getClotheColor(_dna),
+                    "&clotheType=",
+                    getClotheType(_dna),
+                    "&eyeType=",
+                    getEyeType(_dna),
+                    "&eyebrowType=",
+                    getEyeBrowType(_dna),
+                    "&facialHairColor=",
+                    getFacialHairColor(_dna),
+                    "&facialHairType=",
+                    getFacialHairType(_dna),
+                    "&hairColor=",
+                    getHairColor(_dna),
+                    "&hatColor=",
+                    getHatColor(_dna),
+                    "&graphicType=",
+                    getGraphicType(_dna),
+                    "&mouthType=",
+                    getMouthType(_dna),
+                    "&skinColor=",
+                    getSkinColor(_dna)
+                )
+            );
+    }
+
+        return string(abi.encodePacked(params, "&topType=", getTopType(_dna)));
+    }
+
+    
+    
 
     function tokenURI(uint256 tokenId)
     public 
@@ -42,9 +86,8 @@ contract plPunks is ERC721, ERC721Enumerable, punkDNA {
                 abi.encodePacked(
                     '{ "name": "PlPunks #',
                     tokenId,
-                    '","description": "PlatziPunks Randomly generated"',
+                    '", "description": "PlPunks Randomly generated"',
                     '"external_url": "ipfs://<hash>"',
-                    "//TODO:Calculate image URL",--^
                     '"}'
                 )
             );

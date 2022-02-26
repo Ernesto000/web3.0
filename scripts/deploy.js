@@ -1,6 +1,6 @@
 
 const deploy = async () => {
-    const [deployer] =await ethers.getSigners();
+    const [deployer] = await ethers.getSigners();
     console.log("Deploying contract with the account:",deployer.address);
     const plPunks = await ethers.getContractFactory("plPunks");
     const deployed = await plPunks.deploy();
@@ -13,3 +13,5 @@ deploy()
     console.log(error);
     process.exit(1);
 });
+
+//clase #13
