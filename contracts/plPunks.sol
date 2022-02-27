@@ -5,11 +5,11 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "./Base64.sol";
-import "./punkDNA.sol";
+import "./PunkDNA.sol";
 
 
 
-contract plPunks is ERC721, ERC721Enumerable, punkDNA {
+contract plPunks is ERC721, ERC721Enumerable, PunkDNA{
     using Counters for Counters.Counter;
 
     Counters.Counter private _idCounter;
@@ -20,15 +20,15 @@ contract plPunks is ERC721, ERC721Enumerable, punkDNA {
         maxSupply = _maxSupply;
     }
 
-
-    function mint()public {
+function mint() public {
         uint256 current = _idCounter.current();
         require(current < maxSupply, "No tokens left");
 
-        tokenDNA(current) = deterministicPseudoRandomDNA(current, msg.sender);
+        tokenDNA[current] = deterministicPseudoRandomDNA(current, msg.sender);
+        _idCounter.increment();
         _safeMint(msg.sender, current);
     }
-
+    
     function _baseURI() internal pure override returns(string memory){
         return "https://avataaars.io";
     }
