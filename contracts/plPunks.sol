@@ -22,11 +22,11 @@ contract plPunks is ERC721, ERC721Enumerable, PunkDNA{
 
 function mint() public {
         uint256 current = _idCounter.current();
-        require(current < maxSupply, "No tokens left");
+        require(current <= maxSupply, "No tokens left");
 
         tokenDNA[current] = deterministicPseudoRandomDNA(current, msg.sender);
-        _idCounter.increment();
         _safeMint(msg.sender, current);
+        _idCounter.increment();
     }
     
     function _baseURI() internal pure override returns(string memory){
@@ -67,7 +67,13 @@ function mint() public {
 
         return string(abi.encodePacked(params, "&topType=", getTopType(_dna)));
     }
+    function imageByDNA(uint256 _dna) public view returns (string memory) {
+        string memory baseURI = _baseURI();
+        string memory paramsURI = _paramsURI(_dna);
 
+        return string (abi.encodePacked(baseURI, "?", paramsURI));
+        
+    }
     
     
 
@@ -82,12 +88,15 @@ function mint() public {
             _exists(tokenId),
             "ERC721 Metadata: URI query for nonexistent Token");
 
+            uint256 dna = tokenDNA[tokenId];
+            string memory image = imageByDNA(dna);
+
             string memory jsonURI = Base64.encode(
                 abi.encodePacked(
                     '{ "name": "PlPunks #',
-                    tokenId,
+                    tokenId.toString(),
                     '", "description": "PlPunks Randomly generated"',
-                    '"external_url": "ipfs://<hash>"',
+                    image,
                     '"}'
                 )
             );
