@@ -1,4 +1,6 @@
-const { expect } = require("chai");
+const { expect } = require("chai"); //chai -herramienta de testing
+//llamamos una funcion para probar nuestro contrato
+//test para la cantidad maxima del contrato
 
 describe("Platzi Punks Contract", () => {
   const setup = async ({ maxSupply = 10000 }) => {
@@ -11,7 +13,7 @@ describe("Platzi Punks Contract", () => {
       deployed,
     };
   };
-
+//llamada asincrona del contrato en solidity
   describe("Deployment", () => {
     it("Sets max supply to passed param", async () => {
       const maxSupply = 4000;
@@ -22,7 +24,8 @@ describe("Platzi Punks Contract", () => {
       expect(maxSupply).to.equal(returnedMaxSupply);
     });
   });
-
+//this test is failing
+//AssertionError: Transaction is not being reverted.
   describe("Minting", () => {
     it("Mints a new token and assigns it to owner", async () => {
       const { owner, deployed } = await setup({});
@@ -39,15 +42,16 @@ describe("Platzi Punks Contract", () => {
 
       const { deployed } = await setup({ maxSupply });
 
-      
+      //mint all
       await Promise.all([deployed.mint(), deployed.mint()]);
-
+//assert the last minting
       await expect(deployed.mint()).to.be.revertedWith(
         "No Tokens left"
       );
     });
   });
-
+//syntaxError:Unexpected token h in JSON at position 67??
+//Find out what this means.
     describe("tokenURI", () => {
       it("returns valid metadata", async () => {
         const { deployed } = await setup({});
@@ -59,7 +63,7 @@ describe("Platzi Punks Contract", () => {
         const [, base64JSON] = stringifiedTokenURI.split(
           "data:application/json;base64,"
         );
-        const stringifiedMetadata = await Buffer.from(
+        const stringifiedMetadata =  Buffer.from(
           base64JSON,
           "base64"
         ).toString("ascii");

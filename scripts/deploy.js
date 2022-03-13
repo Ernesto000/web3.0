@@ -2,8 +2,8 @@
 const deploy = async () => {
     const [deployer] = await ethers.getSigners();
     console.log("Deploying contract with the account:",deployer.address);
-    const plPunks = await ethers.getContractFactory("plPunks");
-    const deployed = await plPunks.deploy();
+    const PlPunks = await ethers.getContractFactory("plPunks");
+    const deployed = await PlPunks.deploy(10000);
     console.log("PlPunks is deployed at:",deployed.address);
 }
 
@@ -14,4 +14,4 @@ deploy()
     process.exit(1);
 });
 
-//clase #13
+//realizar deploy hacia rinkeby
